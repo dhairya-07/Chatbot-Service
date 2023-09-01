@@ -59,7 +59,7 @@ exports.updateAdmin = catchAsync(async (req, res, next) => {
 });
 
 exports.deleteAdmin = catchAsync(async (req, res, next) => {
-  const user = await User.findByPk(req.params.id);
+  const user = await User.findOne({ userId: req.params.id });
 
   if (!user) {
     return res.status(400).json({

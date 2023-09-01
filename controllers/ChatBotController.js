@@ -21,6 +21,13 @@ const getAllBots = catchAsync(async (req, res, next) => {
 
 const createBot = catchAsync(async (req, res, next) => {
   const { name, userId } = req.body;
+
+  const user = await User.findOne(req.params.userId);
+  if (user.role !== 'admin') {
+    return res
+      .status(403)
+      .json({ msg: 'You are not authorized to perform this action' });
+  }
   const newBot = await Chatbot.create({
     name,
     userId,

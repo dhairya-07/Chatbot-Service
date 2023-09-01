@@ -9,7 +9,8 @@ const {
 
 const router = Router();
 
-router.route('/').get(getAllBots).post(createBot);
+router.route('/').get(getAllBots);
+router.route('/userId').post(createBot);
 
 router.route('/:id').get(getBot).patch(updateBot).delete(deleteBot);
 
