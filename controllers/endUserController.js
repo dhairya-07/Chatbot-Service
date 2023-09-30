@@ -28,22 +28,6 @@ const getEndUser = catchAsync(async (req, res, next) => {
   });
 });
 
-const createEndUser = catchAsync(async (req, res, next) => {
-  const { username, password, role } = req.body;
-  const userId = shortid();
-  const newEndUser = await User.create({
-    userId,
-    username,
-    password,
-    role,
-  });
-
-  return res.status(201).json({
-    status: 'Success',
-    newEndUser,
-  });
-});
-
 const updateEndUser = catchAsync(async (req, res, next) => {
   const endUser = await User.findOne({ userId: req.params.id });
 
@@ -81,7 +65,6 @@ const deleteEndUser = catchAsync(async (req, res, next) => {
 module.exports = {
   getAllEndUsers,
   getEndUser,
-  createEndUser,
   updateEndUser,
   deleteEndUser,
 };

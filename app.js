@@ -1,4 +1,6 @@
+require('dotenv').config({ path: './config.env' });
 const express = require('express');
+const auth = require('./routes/authRoutes');
 const userRoutes = require('./routes/adminRoutes');
 const endUserRoutes = require('./routes/endUserRoutes');
 const chatbotRoutes = require('./routes/chatbotRoutes');
@@ -23,6 +25,7 @@ sequelize
 
 app.use(express.json());
 
+app.use('/api/auth', auth);
 app.use('/api/admin', userRoutes);
 app.use('/api/end-user', endUserRoutes);
 app.use('/api/chatbot', chatbotRoutes);

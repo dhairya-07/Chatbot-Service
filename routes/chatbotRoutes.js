@@ -1,4 +1,5 @@
 const { Router } = require('express');
+const { protect } = require('../controllers/auth');
 const {
   getAllBots,
   getBot,
@@ -10,8 +11,12 @@ const {
 const router = Router();
 
 router.route('/').get(getAllBots);
-router.route('/userId').post(createBot);
+router.route('/userId').post(protect, createBot);
 
-router.route('/:id').get(getBot).patch(updateBot).delete(deleteBot);
+router
+  .route('/:id')
+  .get(getBot)
+  .patch(protect, updateBot)
+  .delete(protect, deleteBot);
 
 module.exports = router;

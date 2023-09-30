@@ -1,4 +1,5 @@
 const { DataTypes } = require('sequelize');
+const bcrypt = require('bcryptjs');
 
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
@@ -20,6 +21,15 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.ENUM('admin', 'endUser'),
       allowNull: false,
     },
+  });
+
+  User.prototype.validatePassword = (password) => {
+    return bcrypt.compareSync(password, this.password);
+  };
+
+  User.beforeCreate(async (user, options) => {
+    const hashedPassword = await bcrypt.hash(user.password, 10);
+    user.password = hashedPassword;
   });
 
   User.associate = (models) => {

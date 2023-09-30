@@ -22,12 +22,17 @@ const getAllBots = catchAsync(async (req, res, next) => {
 const createBot = catchAsync(async (req, res, next) => {
   const { name, userId } = req.body;
 
-  const user = await User.findOne(req.params.userId);
-  if (user.role !== 'admin') {
-    return res
-      .status(403)
-      .json({ msg: 'You are not authorized to perform this action' });
-  }
+  // const user = await User.findOne(req.params.userId);
+  // if (user.role !== 'admin') {
+  //   return res
+  //     .status(403)
+  //     .json({ msg: 'You are not authorized to perform this action' });
+  // }
+  if (req.user.role !== 'admin')
+    return res.status(403).json({
+      msg: 'You are not authorized to perform this action',
+    });
+
   const newBot = await Chatbot.create({
     name,
     userId,
@@ -58,6 +63,12 @@ const updateBot = catchAsync(async (req, res, next) => {
     return res.status(400).json({ msg: 'No bot found with this id' });
   }
 
+  if (bot.userId !== req.user.userId) {
+    return res.status(403).json({
+      msg: 'You are not authorized to perform this action',
+    });
+  }
+
   bot.name = req.body.name;
   await bot.save();
 
@@ -73,6 +84,12 @@ const deleteBot = catchAsync(async (req, res, next) => {
   if (!bot) {
     return res.status(400).json({
       msg: 'No bot found with this id',
+    });
+  }
+
+  if (bot.userId !== req.user.userId) {
+    return res.status(403).json({
+      msg: 'You are not authorized to perform this action',
     });
   }
 

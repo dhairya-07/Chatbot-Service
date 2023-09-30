@@ -12,20 +12,20 @@ exports.getAllAdmins = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.createAdmin = catchAsync(async (req, res, next) => {
-  const { username, password, role } = req.body;
-  const userId = shortid();
-  const newUser = await User.create({
-    userId,
-    username,
-    password,
-    role,
-  });
-  return res.status(201).json({
-    status: 'Success',
-    newUser,
-  });
-});
+// exports.createAdmin = catchAsync(async (req, res, next) => {
+//   const { username, password, role } = req.body;
+//   const userId = shortid();
+//   const newUser = await User.create({
+//     userId,
+//     username,
+//     password,
+//     role,
+//   });
+//   return res.status(201).json({
+//     status: 'Success',
+//     newUser,
+//   });
+// });
 
 exports.getAdmin = catchAsync(async (req, res, next) => {
   const user = await User.findOne({
